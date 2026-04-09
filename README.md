@@ -175,7 +175,7 @@ add slot=ramstorage tmpfs-max-size=100M type=tmpfs
 
 1) Создадим интерфейс для контейнера
 ```
-/interface veth add address=172.18.20.6/30 gateway=172.18.20.5 gateway6="" name=docker-xray-vless-veth
+/interface veth add address=172.200.20.6/30 gateway=172.200.20.5 gateway6="" name=docker-xray-vless-veth
 ```
 
 2) Добавим правило в mangle для изменения mss для трафика, уходящего в контейнер. Поместите его после правила с RFC1918 (его мы создали ранее).
@@ -183,13 +183,13 @@ add slot=ramstorage tmpfs-max-size=100M type=tmpfs
 /ip firewall mangle add action=change-mss chain=forward new-mss=1360 out-interface=docker-xray-vless-veth passthrough=yes protocol=tcp tcp-flags=syn tcp-mss=1420-65535
 ```
 
-3) Назначим на созданный интерфейс IP адрес. IP 172.18.20.6 возьмёт себе контейнер, а 172.18.20.5 будет адрес RouterOS.
+3) Назначим на созданный интерфейс IP адрес. IP 172.200.20.6 возьмёт себе контейнер, а 172.200.20.5 будет адрес RouterOS.
 ```
-/ip address add interface=docker-xray-vless-veth address=172.18.20.5/30
+/ip address add interface=docker-xray-vless-veth address=172.200.20.5/30
 ```
 4) В таблице маршрутизации "r_to_vpn" создадим маршрут по умолчанию ведущий на контейнер
 ```
-/ip route add distance=1 dst-address=0.0.0.0/0 gateway=172.18.20.6 routing-table=r_to_vpn
+/ip route add distance=1 dst-address=0.0.0.0/0 gateway=172.200.20.6 routing-table=r_to_vpn
 ```
 5) Включаем masquerade для всего трафика, уходящего в контейнер.
 ```
@@ -260,12 +260,12 @@ add key=SUDOKU_PASSWORD list=xvr value=YOUR_SUDOKU_PASSWORD
 ![img](Demonstration/1.3.png)
 
 :anger:
-Контейнер будет использовать только локальный DNS сервер на IP адресе 172.18.20.5. Необходимо разрешить DNS запросы TCP/UDP порт 53 на данный IP в правилах RouterOS в разделе ```/ip firewall filter```
+Контейнер будет использовать только локальный DNS сервер на IP адресе 172.200.20.5. Необходимо разрешить DNS запросы TCP/UDP порт 53 на данный IP в правилах RouterOS в разделе ```/ip firewall filter```
 Указанные правила должны быть выше запрещающих. 
 ```
 /ip firewall filter
-add chain=input in-interface=docker-xray-vless-veth src-address=172.18.20.6 dst-address=172.18.20.5 protocol=udp dst-port=53 action=accept comment="container -> local DNS (UDP/53)"
-add chain=input in-interface=docker-xray-vless-veth src-address=172.18.20.6 dst-address=172.18.20.5 protocol=tcp dst-port=53 action=accept comment="container -> local DNS (TCP/53)"
+add chain=input in-interface=docker-xray-vless-veth src-address=172.200.20.6 dst-address=172.200.20.5 protocol=udp dst-port=53 action=accept comment="container -> local DNS (UDP/53)"
+add chain=input in-interface=docker-xray-vless-veth src-address=172.200.20.6 dst-address=172.200.20.5 protocol=tcp dst-port=53 action=accept comment="container -> local DNS (TCP/53)"
 ```
 
 
@@ -385,7 +385,7 @@ nano /opt/start.sh
 |   **XHTTP_PATH**    |                 /secretpath                  | Путь XHTTP (должен совпадать с сервером)                   |
 |   **XHTTP_MODE**    |                     auto                     | Режим XHTTP (auto/stream-one/stream-up)                    |
 | **SUDOKU_PASSWORD**  |                 mypassword                   | Пароль Finalmask Sudoku (должен совпадать с сервером)      |
-|     **GATEWAY**      |              172.18.20.5                     | IP шлюз по-умолчанию в Linux (подсмотреть через ```ip r```)|
+|     **GATEWAY**      |              172.200.20.5                     | IP шлюз по-умолчанию в Linux (подсмотреть через ```ip r```)|
 |   **ADAPTER_NAME**   |                eth0                          | Название физического адаптера в Linux (подсмотреть через ```ip a```) |
 
 ```
