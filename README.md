@@ -1,4 +1,4 @@
-# :sparkles: XRay Vless Reality + MikroTik :sparkles:
+# :sparkles: XRay VLESS+XHTTP+REALITY+Finalmask + MikroTik :sparkles:
 
 
 ![img](Demonstration/logo.png)
@@ -6,9 +6,9 @@
 :dizzy: Аналог [AmneziaWG + MikroTik](https://github.com/catesin/AmneziaWG-MikroTik)
 
 
-В данном репозитории рассматривается работа MikroTik RouterOS V7.20.6+ с протоколом **XRay Vless Reality**. В процессе настройки, относительно вашего оборудования, следует выбрать вариант реализации с [контейнером](https://help.mikrotik.com/docs/display/ROS/Container) внутри RouterOS или без контейнера. 
+В данном репозитории рассматривается работа MikroTik RouterOS V7.20.6+ с протоколом **VLESS+XHTTP+REALITY+Finalmask** (максимальная защита от DPI). Используется XHTTP-транспорт с xmux, REALITY (имитация TLS), Finalmask (фрагментация TLS ClientHello + sudoku-трансформация данных). В процессе настройки, относительно вашего оборудования, следует выбрать вариант реализации с [контейнером](https://help.mikrotik.com/docs/display/ROS/Container) внутри RouterOS или без контейнера. 
 
-Предполагается что вы уже настроили серверную часть Xray например [с помощью панели управления 3x-ui](https://github.com/MHSanaei/3x-ui) и протестировали конфигурацию клиента, например на смартфоне или персональном ПК.
+Предполагается что вы уже настроили серверную часть Xray-core v26.3.27+ с поддержкой XHTTP и Finalmask. Пример серверного конфига — `server-config-example.json`.
 
 :school: Внимание! Инструкция среднего уровня сложности. Перед применением настроек вам необходимо иметь опыт в настройке MikroTik уровня сертификации MTCNA. 
 
