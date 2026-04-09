@@ -1,0 +1,101 @@
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "inbounds": [
+        {
+            "tag": "vless-in",
+            "listen": "0.0.0.0",
+            "port": 443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "YOUR_UUID",
+                        "flow": ""
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "xhttp",
+                "xhttpSettings": {
+                    "path": "/secretpath",
+                    "mode": "auto",
+                    "xPaddingBytes": "100-1000"
+                },
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "dest": "www.microsoft.com:443",
+                    "serverNames": [
+                        "www.microsoft.com",
+                        "microsoft.com"
+                    ],
+                    "privateKey": "YOUR_PRIVATE_KEY",
+                    "shortIds": [
+                        "YOUR_SHORT_ID"
+                    ],
+                    "maxTimeDiff": 60000
+                },
+                "finalmask": {
+                    "tcp": [
+                        {
+                            "type": "fragment",
+                            "settings": {
+                                "packets": "tlshello",
+                                "length": "10-50",
+                                "delay": "5-15"
+                            }
+                        },
+                        {
+                            "type": "sudoku",
+                            "settings": {
+                                "password": "YOUR_SUDOKU_PASSWORD",
+                                "ascii": "prefer_ascii",
+                                "paddingMin": 1,
+                                "paddingMax": 8
+                            }
+                        }
+                    ]
+                }
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": ["http", "tls", "quic"]
+            }
+        }
+    ],
+    "routing": {
+        "domainStrategy": "AsIs",
+        "rules": []
+    },
+    "outbounds": [
+        {
+            "tag": "direct",
+            "protocol": "freedom"
+        },
+        {
+            "tag": "YOUR_CHAIN_PROXY",
+            "protocol": "vless",
+            "settings": {
+                "id": "YOUR_CHAIN_UUID",
+                "flow": "xtls-rprx-vision",
+                "port": 443,
+                "address": "YOUR_CHAIN_SERVER_IP",
+                "encryption": "none"
+            },
+            "streamSettings": {
+                "network": "raw",
+                "security": "reality",
+                "realitySettings": {
+                    "shortId": "YOUR_CHAIN_SHORT_ID",
+                    "spiderX": "/",
+                    "publicKey": "YOUR_CHAIN_PUBLIC_KEY",
+                    "serverName": "dl.google.com",
+                    "fingerprint": "chrome"
+                }
+            }
+        }
+    ]
+}
