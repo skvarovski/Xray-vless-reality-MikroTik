@@ -129,21 +129,21 @@ add action=mark-routing chain=output connection-mark=to-vpn-conn-local \
 ```
 docker image prune -f
 
-docker buildx build -f Dockerfile_arm64 --no-cache --progress=plain --platform linux/arm64/v8 --output=type=docker --tag user/docker-xray-vless:latest .
+docker buildx build -f Dockerfile_arm64 --no-cache --progress=plain --platform linux/arm64/v8 --provenance=false --output=type=docker,compression=gzip --tag xray-mikrotik-arm64:latest .
 ```
 
 Для ARMv7 (Containers\Dockerfile_arm)
 ```
 docker image prune -f
 
-docker buildx build -f Dockerfile_arm --no-cache --progress=plain --platform linux/arm/v7 --output=type=docker --tag user/docker-xray-vless:latest .
+docker buildx build -f Dockerfile_arm --no-cache --progress=plain --platform linux/arm/v7 --provenance=false --output=type=docker,compression=gzip --tag xray-mikrotik-arm:latest .
 ```
 
 Для amd64 (Containers\Dockerfile_amd64)
 ```
 docker image prune -f
 
-docker buildx build -f Dockerfile_amd64 --no-cache --progress=plain --platform linux/amd64 --output=type=docker --tag user/docker-xray-vless:latest .
+docker buildx build -f Dockerfile_amd64 --no-cache --progress=plain --platform linux/amd64 --provenance=false --output=type=docker,compression=gzip --tag xray-mikrotik-amd64:latest .
 ```
 Иногда процесс создания образа может подвиснуть из-за плохого соединения с интернетом. Следует повторно запустить сборку. 
 После сборки образа вы можете загрузить контейнер в приватный репозиторий Docker HUB и продолжить настройку по [следующему пункту](#R_Xray_1_settings)
