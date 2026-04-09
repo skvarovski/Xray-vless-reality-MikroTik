@@ -67,3 +67,29 @@ docker save xray-mikrotik-arm64:latest > xray-mikrotik-arm64.tar
 ```
 
 Итоговый файл `xray-mikrotik-arm64.tar` (~22 MB) загружается в RouterOS.
+
+## Переменные окружения контейнера
+
+Передаются через `/container envs` в RouterOS. Конфиг генерируется в `start.sh` при старте.
+
+| Переменная | Дефолт | Обязательная | Описание |
+|---|---|---|---|
+| `SERVER_ADDRESS` | — | да | Адрес Xray сервера (FQDN или IP) |
+| `SERVER_PORT` | `443` | нет | Порт сервера |
+| `ID` | — | да | UUID клиента VLESS |
+| `FLOW` | — | нет | Flow control (пусто для XHTTP) |
+| `FP` | `chrome` | нет | TLS fingerprint для REALITY |
+| `SNI` | `www.microsoft.com` | нет | SNI для REALITY |
+| `PBK` | — | да | Публичный ключ REALITY (x25519) |
+| `SID` | — | да | Short ID REALITY (hex) |
+| `SPX` | `/en-us` | нет | Путь SpiderX |
+| `XHTTP_PATH` | — | да | Путь XHTTP (должен совпадать с сервером) |
+| `XHTTP_MODE` | `auto` | нет | Режим XHTTP |
+| `SUDOKU_PASSWORD` | — | да | Пароль Finalmask Sudoku (должен совпадать с сервером) |
+
+### Протокол: VLESS + XHTTP + REALITY + Finalmask
+
+- **Транспорт**: XHTTP с xmux (maxConcurrency 16-32, cMaxReuseTimes 64-128) и xPaddingBytes 100-1000
+- **Безопасность**: REALITY (имитация TLS сайта из SNI)
+- **Finalmask**: fragment (фрагментация TLS ClientHello 10-50 байт) + sudoku (трансформация данных)
+- **Требование**: Xray-core v26.3.27+ на клиенте и сервере
