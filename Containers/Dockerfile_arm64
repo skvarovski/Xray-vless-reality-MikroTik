@@ -5,6 +5,9 @@ FROM alpine:${ALPINE_VERSION}
 RUN set -ex; \
 apk update && apk add --no-cache bash openrc openresolv iproute2 libqrencode p7zip
 
+RUN rc-update del hwdrivers sysinit 2>/dev/null; \
+    rc-update del machine-id sysinit 2>/dev/null; true
+
 #Tun2Socks
 RUN mkdir /opt/tun2socks/
 COPY ./tun2socks/tun2socks-linux-arm64.7z /opt/tun2socks/tun2socks.7z
