@@ -1,4 +1,4 @@
-#:sparkles:XRay VLESS+XHTTP+REALITY+Finalmask+MikroTik:sparkles:
+# :sparkles: XRay VLESS+XHTTP+REALITY+Finalmask+MikroTik :sparkles:
 
 
 ![img](Demonstration/logo.png)
